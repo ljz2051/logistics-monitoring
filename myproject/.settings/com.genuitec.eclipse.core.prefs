@@ -1,0 +1,4 @@
+#Sat Apr 22 15:02:58 CST 2017
+eclipse.preferences.version=1
+validator.Checked=WebRoot/js/bootstrap.min.js,WebRoot/js/jquery-3.1.1.min.js,WebRoot/js/jquery.validate.js,WebRoot/js/jquery-3.2.1.min.js,WebRoot/js/jquery-3.1.1.js,WebRoot/courier/modify.jsp
+validator.Unchecked=

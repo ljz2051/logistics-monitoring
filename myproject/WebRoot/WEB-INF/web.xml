@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  <display-name></display-name>
+  <servlet>
+    <servlet-name>addCourier</servlet-name>
+    <servlet-class>courier.addCourier</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>modifyIfExist</servlet-name>
+    <servlet-class>courier.modifyIfExist</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>deleteCourier</servlet-name>
+    <servlet-class>courier.deleteCourier</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>addTerminal</servlet-name>
+    <servlet-class>terminal.addTerminal</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>modifyCourier</servlet-name>
+    <servlet-class>courier.modifyCourier</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>terminalIfExist</servlet-name>
+    <servlet-class>terminal.terminalIfExist</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>modifyTerminal</servlet-name>
+    <servlet-class>terminal.modifyTerminal</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>deleteTerminal</servlet-name>
+    <servlet-class>terminal.deleteTerminal</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>addTask</servlet-name>
+    <servlet-class>task.addTask</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>dsa</servlet-name>
+    <servlet-class>task.dsa</servlet-class>
+  </servlet>
+
+
+
+
+
+
+
+
+
+  <servlet-mapping>
+    <servlet-name>addCourier</servlet-name>
+    <url-pattern>/addCourier</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>modifyIfExist</servlet-name>
+    <url-pattern>/modifyIfExist</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>deleteCourier</servlet-name>
+    <url-pattern>/deleteCourier</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>addTerminal</servlet-name>
+    <url-pattern>/addTerminal</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>modifyCourier</servlet-name>
+    <url-pattern>/modifyCourier</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>terminalIfExist</servlet-name>
+    <url-pattern>/terminalIfExist</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>modifyTerminal</servlet-name>
+    <url-pattern>/modifyTerminal</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>deleteTerminal</servlet-name>
+    <url-pattern>/deleteTerminal</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>addTask</servlet-name>
+    <url-pattern>/addTask</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>dsa</servlet-name>
+    <url-pattern>/servlet/dsa</url-pattern>
+  </servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>homePage.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
