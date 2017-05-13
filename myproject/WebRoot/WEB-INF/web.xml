@@ -41,6 +41,21 @@
     <servlet-name>dsa</servlet-name>
     <servlet-class>task.dsa</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>deleteTask</servlet-name>
+    <servlet-class>task.deleteTask</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>taskIfExist</servlet-name>
+    <servlet-class>task.taskIfExist</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>modifyTask</servlet-name>
+    <servlet-class>task.modifyTask</servlet-class>
+  </servlet>
+
+
+
 
 
 
@@ -89,6 +104,18 @@
   <servlet-mapping>
     <servlet-name>dsa</servlet-name>
     <url-pattern>/servlet/dsa</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>deleteTask</servlet-name>
+    <url-pattern>/deleteTask</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>taskIfExist</servlet-name>
+    <url-pattern>/taskIfExist</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>modifyTask</servlet-name>
+    <url-pattern>/modifyTask</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>homePage.jsp</welcome-file>

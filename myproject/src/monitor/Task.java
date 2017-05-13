@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 import DB.DBAcess;
 
@@ -14,12 +16,12 @@ public class Task {
 	private int state;//任务状态： 0表示新创建未下发，1表示已经下发给移动端未揽收，2表示已揽收，正在运输，3表示已签收任务结束
 	private String courierId;
 	private String terminalId;
-	private ArrayList<String> goodList;
+	private Set<String> goodList;
 	private ArrayList<Point> routes;
 	private String startLocation;
 	private String endLocation;
 	
-	public Task(String ID,int state,String courierId,String terminalId,ArrayList<String> goodList,ArrayList<Point> routes,String start,String end){
+	public Task(String ID,int state,String courierId,String terminalId,Set<String> goodList,ArrayList<Point> routes,String start,String end){
 		this.ID = ID;
 		this.state = state;
 		this.courierId = courierId;
@@ -43,7 +45,7 @@ public class Task {
 			  if(rs.next()){
 				  String goodIdList = rs.getString(5);
 				  String[] s = goodIdList.split("/");
-				  ArrayList<String> goodlist = new ArrayList<String>();
+				  Set<String> goodlist = new HashSet<String>();
 				  for(int i = 0; i < s.length; i++){
 					  goodlist.add(s[i]);
 				  }
@@ -105,7 +107,7 @@ public class Task {
 			 if(rs.next()){
 				 String goodIdList = rs.getString(5);
 				  String[] s = goodIdList.split("/");
-				  ArrayList<String> goodlist = new ArrayList<String>();
+				  Set<String> goodlist = new HashSet<String>();
 				  for(int i = 0; i < s.length; i++){
 					  goodlist.add(s[i]);
 				  }
@@ -129,13 +131,34 @@ public class Task {
 		}
 	}
 	
+	public String getId(){
+		return this.ID;
+	}
+	
 	
 	//比较两个任务是否相同
 	public boolean isEqual(Task t){
-		if(t.ID == this.ID && t.state == this.state && t.courierId == this.courierId && 
-				t.terminalId == this.terminalId && t.goodList == this.goodList && t.routes == this.routes
-				&& t.startLocation == this.startLocation && t.endLocation == this.endLocation)
-		    return true;
+		/*if(!t.ID.equals(this.ID)) System.out.println("ID:"+t.ID);
+		if(t.state != this.state) System.out.println("state:"+t.state);
+		if(!t.courierId.equals(this.courierId)) System.out.println("courierId"+t.courierId);
+		if(!t.terminalId.equals(this.terminalId)) System.out.println("terminalId:"+t.terminalId);
+		if(!t.goodList.equals(this.goodList)) System.out.println("goodlist:"+t.goodList);
+		if(!t.startLocation.equals(this.startLocation)) System.out.println("startl:"+t.startLocation);
+		if(!t.endLocation.equals(this.endLocation)) System.out.println("endl:"+this.endLocation);*/
+		
+		if(t.ID.equals(this.ID) && t.state == this.state && t.courierId.equals(this.courierId) && 
+				t.terminalId.equals(this.terminalId) && t.goodList.equals(this.goodList) &&
+				t.startLocation.equals(this.startLocation) && t.endLocation.equals(this.endLocation)){
+			if(t.routes.size() != this.routes.size())
+				return false;
+			else{
+				for(int i = 0; i < t.routes.size(); i++){	
+			    	if(t.routes.get(i).getLng() != this.routes.get(i).getLng() || t.routes.get(i).getLat() != this.routes.get(i).getLat())
+			    		return false;
+			    }
+				return true;
+			}   
+		}
 		else
 			return false;
 		

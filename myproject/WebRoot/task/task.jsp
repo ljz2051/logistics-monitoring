@@ -105,23 +105,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <script>
      $(document).ready(function(){
        $("#modify").click(function(){
-         var t = prompt("请输入快递员的ID:","");
+         var t = prompt("请输入要修改的任务的编号:","");
          var tem = /^[A-Za-z0-9]+$/;
          if(t != null && t != "" && tem.test(t)){
-            window.location.href = "../modifyIfExist?id="+t;
+            window.location.href = "../taskIfExist?id="+t;
          }
          else 
            alert("输入的ID无效！");
        });
        
        $("#delete").click(function(){
-         var d = prompt("请输入要删除的快递员的ID:","");
+         var d = prompt("请输入要删除的任务的编号:","");
          var tem = /^[A-Za-z0-9]+$/;
          if(d != null && d != "" && tem.test(d)){
-            window.location.href = "../deleteCourier?id="+d;
+            window.location.href = "../deleteTask?id="+d;
          }
          else
-           alert("输入的ID无效！");
+           alert("输入的任务编号无效！");
        });
      });
      

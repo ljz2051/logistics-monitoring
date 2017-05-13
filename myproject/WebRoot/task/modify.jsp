@@ -4,18 +4,14 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <%@ page import="javax.servlet.*,java.text.*" %>
-<%@ page import=" java.util.Date" %>
-<%@ page import="java.sql.Statement" %>
-<%@ page import="java.sql.ResultSet" %>
-<%@ page import="java.sql.SQLException" %>
+<%@ page import="java.sql.*"%>
 <%@ page import="DB.DBAcess" %>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
     <base href="<%=basePath%>">
     
-    <title>任务信息管理</title>
+    <title>修改任务信息</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -37,99 +33,99 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   </head>
   <body>
-    <%!
-    //任务编号有系统自动生成，前8位为新建任务时的日期，后3位为从0自增的序号，且每过一天，后三位清零
-       synchronized String getTaskId(){
-         Date now = new Date();
-		 SimpleDateFormat ft = new SimpleDateFormat("yyyyMMdd");
-         ServletContext application = getServletContext();
-         String taskId = (String)application.getAttribute("taskId");
-         if(taskId == null){
-           String id = ft.format(now)+"000";
-           application.setAttribute("taskId", id);
-           return id;
-         }
-         else{
-            String day = taskId.substring(0, 8);
-            if(ft.format(now).equals(day)){
-              String id = day+(Integer.parseInt(taskId.substring(8))+1);
-              application.setAttribute("taskId", id);
-              return id;
-            }
-            else{
-              String id = ft.format(now).substring(0,8)+"000";
-              application.setAttribute("taskId", id);
-              return id;
-            }
-         }
-       }
+    <%
+      request.setCharacterEncoding("utf-8");
+      String ID = request.getParameter("id");
+      
+      Statement sql = null;
+      ResultSet rs = null;
+      String tableName1 = "task";
+	  DBAcess db = new DBAcess();
+	  sql =  db.DBConnect();
+	  String courierId = null;
+	  String terminalId = "";
+	  String goodlist = "";
+	  String start = "";
+	  String end = "";
+	  try{
+	    rs = sql.executeQuery("select * from "+tableName1+" where ID = '"+ID+"'");
+	    if(rs.next()){
+		    courierId = rs.getString(3);
+		    terminalId = rs.getString(4);
+		    goodlist = rs.getString(5);
+		    start = rs.getString(7);
+		    end = rs.getString(8);
+		    out.println( "<p>"+terminalId+"   "+goodlist+"   "+start+"   "+end+"</p>");
+	    }
+	  }
+	  catch(SQLException e){
+	    e.printStackTrace();
+	  } 
     %>
     <div class="container">
       <div class="row">
 	      <div class="col-md-7">
 		      <div class="page-header">
-		        <h2>新建任务 </h2>
+		        <h2>修改任务信息 </h2>
 		      </div>
-		      <form id="addForm" action="addTask" method="post" accept-charset="utf-8">
+		      <form id="modifyForm" action="modifyTask" method="post" accept-charset="utf-8">
 		        <table class="table table-striped">
 		          <tbody>
 		            <tr>
 		              <td class="col-md-3 text-center">任务编号</td>
-		              <td class="col-md-3"><input class="form-control" readonly="readonly" type="text" id="id" name="id" value="<%=getTaskId() %>"></td>
+		              <td class="col-md-3"><input class="form-control" readonly="readonly" type="text" id="id" name="id" value="<%=ID %>"></td>
 		            </tr>
+		            
+		 
 		            <tr>
 		              <td class="text-center">移动端ID</td>
 		              <td>
-		                   <select class="form-control" name="terminalId" id="terminalId" onchange="showCourierId(this.value)">
+		                <select class="form-control" name="terminalId" id="terminalId" onchange="showCourierId(this.value)">
 		                <%
-		                Statement sql = null;
-				        ResultSet rs = null;
-				        String tableName = "terminal";
-				       
-						DBAcess db = new DBAcess();
-						sql =  db.DBConnect();
-						
+				        String tableName2 = "terminal";
 						try{
-						  rs = sql.executeQuery("select ID from "+tableName);
+						  rs = sql.executeQuery("select ID from "+tableName2);
 						  while(rs.next())
 						  {
-						    out.print("<option value='"+rs.getString(1)+"'>"+rs.getString(1)+"</option>");
+						    if(rs.getString(1).equals(terminalId))
+						      out.print("<option value='"+rs.getString(1)+"' selected>"+rs.getString(1)+"</option>");
+						    else
+						      out.print("<option value='"+rs.getString(1)+"'>"+rs.getString(1)+"</option>");
 						  }
 						}
 						catch(SQLException e){
 						  out.println(e);
 						} 
 		                 %>
-		                 </select>
+		                </select>
 		              </td>
 		            </tr>
 		            <tr>
 		              <td class="text-center">对应的快递员ID</td>
-		              <td><input class="form-control" type="text" id="courierId" name="courierId" readonly="readonly" ></td>
+		              <td><input class="form-control" type="text" id="courierId" name="courierId" value="<%=courierId %>" readonly="readonly" ></td>
 		            </tr>
-		            <tr>
+		           <!--  <tr>
 		              <td class="text-center">货物二维码ID</td>
 		              <td >
 		                <input class="form-control"  type="text" class="col-md-2" id="goodId" name="goodId">
-		                <!-- <button id="addGood" class="col-md-5">tianjia</button> -->
+		                <button id="addGood" class="col-md-5">tianjia</button>
 		                <input type="button" value="添加" id="addGood">
 		              </td>
-		            </tr>
+		            </tr> -->
 		            <tr>
-		              <td class="text-center">货物二维码ID列表</td>
+		              <td class="text-center">货物二维码ID列表<br>(以"/"相间隔)</td>
 		              <td>
-		                <!-- <input class="form-control" type="text" id="goodlist" name="goodlist" readonly="readonly"  value=""> -->
-		                <textarea class="form-control" id="goodlist" name="goodlist" readonly="readonly"></textarea>
+		                <textarea class="form-control" id="goodlist" name="goodlist" ><%=goodlist %></textarea>
 		              </td>
 		            </tr>
 		            <tr>
 		              <td class="text-center">起始地点</td>
-		              <td><input class="form-control" type="text" id="start" name="start" value=""></td>
+		              <td><input class="form-control" type="text" id="start" name="start" value="<%=start %>"></td>
 		            </tr>
 		            <tr>
 		              <td class="text-center">终止地点</td>
 		              <td>
-		                <input class="form-control" type="text" id="end" name="end" value="">
+		                <input class="form-control" type="text" id="end" name="end" value="<%=end %>">
 		                <input type="button" id="route" value="查看规划路径">
 		              </td>
 		            </tr>
@@ -152,6 +148,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
   </body>
   <script> 
+   
 	// 百度地图API功能
 	function G(id) {
 		return document.getElementById(id);
@@ -227,16 +224,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  driving.search(start1,end1);
 	});
 	
-	
-	$("#addGood").click(function(){
-	  var goodid = $("#goodId")[0].value;
-	  var goodlist = $("#goodlist")[0].value;
-	  var newlist = goodlist+goodid+"/";
-	  $("#goodlist").val(newlist);
-	  $("#goodId").val("");
-	
-	});
-	
 	function showCourierId(str){
 	  var xmlhttp;
 	  if(window.XMLHttpRequest)
@@ -259,6 +246,5 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  xmlhttp.open("GET","task/getCourierId.jsp?tid="+str,true);
 	  xmlhttp.send();
 	}
-   
   </script>
 </html>

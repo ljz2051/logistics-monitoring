@@ -17,12 +17,12 @@ import com.google.gson.JsonParser;
 
 import DB.DBAcess;
 
-public class addTask extends HttpServlet {
+public class modifyTask extends HttpServlet {
 
 	/**
 	 * Constructor of the object.
 	 */
-	public addTask() {
+	public modifyTask() {
 		super();
 	}
 
@@ -46,17 +46,17 @@ public class addTask extends HttpServlet {
 	}
 
 	/**
-	 * 根据表单返回信息，添加任务信息到数据库
+	 * 根据表单返回信息，修改数据库中的任务信息
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		String ID = request.getParameter("id");
 		String terminalId = request.getParameter("terminalId");
-		String courierId = request.getParameter("courierId");
 		String goodlist = request.getParameter("goodlist");
 		String start = request.getParameter("start");
 		String end = request.getParameter("end");
+		String courierId = null;
 		String routes = "";//存储规划路径 格式 ：第一个点经度+" "+第一个点纬度+" "+第二个点经度+" "+.......
 		/*System.out.println(start);*/
 		
@@ -85,14 +85,19 @@ public class addTask extends HttpServlet {
 		System.out.println(ID+" "+terminalId+" "+goodlist+" "+start+" "+end);*/
 		
 		Statement sql = null;
-        //ResultSet rs = null;
-        String tableName = "task";
+        ResultSet rs = null;
+        String tableName1 = "terminal";
+        String tableName2 = "task";
        
 		DBAcess db = new DBAcess();
 		sql =  db.DBConnect();
-		try{  
-		  sql.executeUpdate("insert into "+tableName+" values('"+ID+"',0,'"+courierId+"','"+terminalId+"','"+goodlist+"','"+routes+"','"+start+"','"+end+"')");
-		  response.sendRedirect("task/task.jsp");
+		try{
+			  rs = sql.executeQuery("select courierId from "+tableName1+" where ID = '"+terminalId+"'");
+			  if(rs.next()){
+				courierId = rs.getString(1);  
+			  }
+			  sql.executeUpdate("update "+tableName2+" set courierId='"+courierId+"',terminalId='"+terminalId+"',goodIdList='"+goodlist+"',routes='"+routes+"',startLocation='"+start+"',endLocation='"+end+"' where ID='"+ID+"'");
+			  response.sendRedirect("task/task.jsp");
 		} 
 		catch(SQLException e){
 		  System.out.println(e);

@@ -12,6 +12,14 @@ public class Point { //地图上的一个点
 	   this.lat = lat;
    }
    
+   public double getLng(){
+	   return this.lng;
+   }
+   
+   public double getLat(){
+	   return this.lat;
+   }
+   
    //根据两地经纬度计算两地距离
    public static double geoDisatance(double lng1, double lat1, double lng2, double lat2)
    {
